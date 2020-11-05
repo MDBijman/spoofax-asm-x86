@@ -1,0 +1,14 @@
+module asm_x86
+
+imports
+  
+  asm-x86-pp
+  
+
+rules // Debugging
+  
+  debug-show-aterm:
+    (node, _, _, path, project-path) -> (filename, result)
+    with
+      filename := <guarantee-extension(|"aterm")> path
+    ; result   := node

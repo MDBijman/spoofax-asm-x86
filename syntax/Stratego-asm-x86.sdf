@@ -1,0 +1,8 @@
+module Stratego-asm-x86
+
+imports StrategoMix[StrategoHost]
+        Embedded-asm-x86[Term[[StrategoHost]]]
+
+exports
+      context-free start-symbols
+          Module[[StrategoHost]]

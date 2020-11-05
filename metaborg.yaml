@@ -1,0 +1,45 @@
+---
+id: org.matthijs:asmx86:0.1.0-SNAPSHOT
+name: asm-x86
+dependencies:
+  compile:
+  - org.metaborg:org.metaborg.meta.lang.esv:${metaborgVersion}
+  - org.metaborg:org.metaborg.meta.lang.template:${metaborgVersion}
+  source:
+  - org.metaborg:meta.lib.spoofax:${metaborgVersion}
+pardonedLanguages:
+- EditorService
+- Stratego-Sugar
+- SDF
+language:
+  sdf:
+    pretty-print: asm-x86
+    sdf2table: java
+    placeholder:
+      prefix: "$"
+  stratego:
+    format: ctree
+    args:
+    - -la
+    - stratego-lib
+    - -la
+    - stratego-sglr
+    - -la
+    - stratego-gpp
+    - -la
+    - stratego-xtc
+    - -la
+    - stratego-aterm
+    - -la
+    - stratego-sdf
+    - -la
+    - strc
+exports:
+- language: Stratego-Sugar
+  directory: src-gen
+- language: Stratego-Sugar
+  directory: trans
+- language: SDF
+  directory: syntax
+- language: SDF
+  directory: src-gen/syntax

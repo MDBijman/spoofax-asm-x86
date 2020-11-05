@@ -1,0 +1,68 @@
+module asm-x86
+
+imports
+  
+  Common
+
+context-free start-symbols
+  
+  Start
+
+sorts
+
+  Start File
+
+context-free syntax
+  
+  //Start.Empty = []
+  Start = File 
+  
+  File.File = [
+    [Globals?]
+    [{Section "\n"}*]
+  ]
+  
+  File.Empty = []
+  
+  Globals.Globals = [global [{Global ","}+]]
+  Global.Global   = ID
+  
+  Section.DataSection = [
+    SECTION .data
+    [DataDeclaration]
+  ]
+  
+  DataDeclaration.DataDeclaration = [[ID]: [DefineMultiplier?] [DefineType] [DefineInitializer]]
+
+  DefineMultiplier.DefineMultiplier = [TIMES [INT]]
+  
+  DefineType.Ten        = [dt]
+  DefineType.Quadword   = [dq]
+  DefineType.Doubleword = [dd]
+  DefineType.Word       = [dw]
+  DefineType.Byte       = [db]
+  
+  DefineInitializer.Initializer = INT
+    
+  Section.CodeSection = [
+    SECTION .code
+    [{Instruction "\n"}*]
+  ]
+  
+  Instruction.Label = [[ID]:]
+  Instruction.Push  = [push [Register]]
+  Instruction.Pop   = [pop [Register]]
+  Instruction.Mov   = [mov [Operand], [Expression]]
+  
+  Operand.DWPointer = <DWORD [<Expression>]> 
+
+  Expression.Sub = [[Expression]-[Expression]]
+  Expression = Register
+  Expression = Value
+
+  Value.Const = INT
+  
+  Register.RBP = [rbp]
+  Register.RSP = [rsp]
+  Register.EAX = [eax]
+    

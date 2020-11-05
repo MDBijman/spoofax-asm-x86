@@ -1,0 +1,14 @@
+module Embedded-asm-x86[E]
+imports
+  asm-x86
+
+exports
+
+  context-free syntax
+  
+    "asm" "|[" File "]|" -> E {cons("ToMetaExpr")}
+    "asm:instr" "|[" Instruction "]|" -> E {cons("ToMetaExpr")}
+    
+  variables
+  
+    "op" [0-9]* -> Operand {prefer}

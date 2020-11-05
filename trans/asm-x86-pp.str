@@ -1,0 +1,49 @@
+module asm-x86-pp
+
+imports
+
+  libstratego-gpp
+  libspoofax/sdf/pp
+  libspoofax/editor/refactoring/-
+  pp/asm-x86-parenthesize
+  pp/asm-x86-pp
+
+rules
+
+  editor-format:
+    (node, _, ast, path, project-path) -> (filename, result)
+    with
+      ext      := <get-extension> path
+    ; filename := <guarantee-extension(|$[pp.[ext]])> path
+    ; result   := <pp-debug> node
+
+rules
+  
+  pp-asm-x86-string =
+    parenthesize-asm-x86
+    ; prettyprint-asm-x86-start-symbols
+    ; !V([], <id>)
+    ; box2text-string(|120)
+      
+  pp-partial-asm-x86-string =
+    parenthesize-asm-x86
+    ; prettyprint-asm-x86
+    ; !V([], <id>)
+    ; box2text-string(|120)
+    
+  pp-partial-asm-x86-string(|sort) =
+    parenthesize-asm-x86
+    ; prettyprint-asm-x86(|sort)
+    ; !V([], <id>)
+    ; box2text-string(|120)  
+      
+  pp-debug :
+    ast -> result
+    with
+       result := <pp-asm-x86-string> ast
+    <+ <bottomup(try(not(is-string); not(is-list); not(pp-asm-x86-string); debug(!"cannot pp ")))> ast
+    ;  result := ""
+
+rules
+  
+  construct-textual-change = construct-textual-change(pp-partial-asm-x86-string, parenthesize, override-reconstruction, resugar)

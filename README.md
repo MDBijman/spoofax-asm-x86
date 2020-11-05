@@ -1,2 +1,2 @@
-# asm-x86 Language Specification
+# Spoofax asm-x86 Language Project
 

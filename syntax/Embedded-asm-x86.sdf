@@ -7,8 +7,22 @@ exports
   context-free syntax
   
     "asm" "|[" File "]|" -> E {cons("ToMetaExpr")}
+    "asm:code" "|[" Section "]|" -> E {cons("ToMetaExpr")}
+    "asm:data" "|[" Section "]|" -> E {cons("ToMetaExpr")}
     "asm:instr" "|[" Instruction "]|" -> E {cons("ToMetaExpr")}
     
-  variables
   
-    "op" [0-9]* -> Operand {prefer}
+  context-free syntax
+
+    "~datasection:" E  -> DataSection {cons("FromMetaExpr")}
+    "~codesection:" E  -> CodeSection {cons("FromMetaExpr")}
+    "~section*:" E  -> Sections {cons("FromMetaExpr")}
+    "~instruction*:" E  -> Instructions {cons("FromMetaExpr")}
+    "~value:" E -> Value {cons("FromMetaExpr")}
+    "~register:" E  -> Register {cons("FromMetaExpr")}
+    "~operand:" E -> Operand {cons("FromMetaExpr")}
+    "~id:" E -> ID {cons("FromMetaExpr")}
+    
+
+ 
+  

@@ -1,34 +1,29 @@
 module Common
 
-lexical sorts
-  ID INT STRING
-  STRING_CHAR BACKSLASH_CHAR
-  COMMENT_CHAR INSIDE_COMMENT
-  NEWLINE_EOF EOF
-
 lexical syntax
 
   ID               = [a-zA-Z\_] [a-zA-Z0-9\_]*
   INT              = "-"? [0-9]+
-  STRING           = "\"" STRING_CHAR* "\""
-  STRING_CHAR      = ~[\"\n]
-  STRING_CHAR      = "\\\""
-  STRING_CHAR      = BACKSLASH_CHAR
-  BACKSLASH_CHAR   = "\\"
+  STRING           = "\"" STRINGCHAR* "\""
+  STRINGCHAR      = ~[\"\n]
+  STRINGCHAR      = "\\\""
+  STRINGCHAR      = BACKSLASHCHAR
+  BACKSLASHCHAR   = "\\"
   LAYOUT           = [\ \t\n\r]
-  LAYOUT           = "/*" INSIDE_COMMENT* "*/"
-  INSIDE_COMMENT   = ~[\*]
-  INSIDE_COMMENT   = COMMENT_CHAR
-  LAYOUT           = "//" ~[\n\r]* NEWLINE_EOF
-  NEWLINE_EOF      = [\n\r]
-  NEWLINE_EOF      = EOF
+  COMMENTCHAR     = [\*]
+  LAYOUT           = "/*" INSIDECOMMENT* "*/"
+  INSIDECOMMENT   = ~[\*]
+  INSIDECOMMENT   = COMMENTCHAR
+  LAYOUT           = "//" ~[\n\r]* NEWLINEEOF
+  NEWLINEEOF      = [\n\r]
+  NEWLINEEOF      = EOF
   EOF              =
 
 lexical restrictions
 
   // Ensure greedy matching for lexicals
   
-  COMMENT_CHAR    -/- [\/]
+  COMMENTCHAR    -/- [\/]
   INT             -/- [0-9]
   ID              -/- [a-zA-Z0-9\_]
   
@@ -38,7 +33,7 @@ lexical restrictions
   
   // Backslash chars in strings may not be followed by " 
   
-  BACKSLASH_CHAR  -/- [\"]
+  BACKSLASHCHAR  -/- [\"]
 
 context-free restrictions
 

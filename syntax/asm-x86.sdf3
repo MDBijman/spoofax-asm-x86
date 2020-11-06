@@ -17,14 +17,18 @@ context-free syntax
   Start = File 
   
   File.File = [
-    [Globals?]
-    [{Section "\n"}*]
+    [Globals]
+    [Sections]
   ]
+  
   
   File.Empty = []
   
-  Globals.Globals = [global [{Global ","}+]]
+  Globals.NoGlobals = 
+  Globals = [global [{Global ","}+]]
   Global.Global   = ID
+  
+  Sections = {Section "\n"}*
   
   Section.DataSection = [
     SECTION .data
@@ -45,17 +49,27 @@ context-free syntax
     
   Section.CodeSection = [
     SECTION .code
-    [{Instruction "\n"}*]
+    [Instructions]
   ]
   
-  Instruction.Label = [[ID]:]
-  Instruction.Push  = [push [Register]]
-  Instruction.Pop   = [pop [Register]]
-  Instruction.Mov   = [mov [Operand], [Expression]]
+  Instructions.NoInstructions = []
+  Instructions = {Instruction "\n"}+
   
-  Operand.DWPointer = <DWORD [<Expression>]> 
+  Instruction.Label = [[ID]:]
+  Instruction.Push  = [push [Operand]]
+  Instruction.Pop   = [pop [Operand]]
+  Instruction.Mov   = [mov [Operand], [Operand]]
+  Instruction.Sub   = [sub [Operand], [Operand]]
+  Instruction.Test  = [test [Operand], [Operand]]
+  Instruction.Cmp   = [cmp [Operand], [Operand]]
+  Instruction.Jle   = [jle [ID]]
+  Instruction.Jmp   = [jmp [ID]]
+  
+  Operand.DWPointer = <DWORD [<Expression>]>
+  Operand.Expression = Expression
+  Operand.Register = Register
 
-  Expression.Sub = [[Expression]-[Expression]]
+  Expression.Sub = [[Expression] - [Expression]]
   Expression = Register
   Expression = Value
 
@@ -64,4 +78,5 @@ context-free syntax
   Register.RBP = [rbp]
   Register.RSP = [rsp]
   Register.EAX = [eax]
+  Register.EBX = [ebx]
     

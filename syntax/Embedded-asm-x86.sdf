@@ -14,15 +14,17 @@ exports
   
   context-free syntax
 
-    "~datasection:" E  -> DataSection {cons("FromMetaExpr")}
-    "~codesection:" E  -> CodeSection {cons("FromMetaExpr")}
-    "~section*:" E  -> Sections {cons("FromMetaExpr")}
+    "~datasection:" E   -> DataSection {cons("FromMetaExpr")}
+    "~textsection:" E   -> TextSection {cons("FromMetaExpr")}
+    "~section*:" E      -> Sections {cons("FromMetaExpr")}
     "~instruction*:" E  -> Instructions {cons("FromMetaExpr")}
-    "~value:" E -> Value {cons("FromMetaExpr")}
-    "~register:" E  -> Register {cons("FromMetaExpr")}
-    "~operand:" E -> Operand {cons("FromMetaExpr")}
-    "~id:" E -> ID {cons("FromMetaExpr")}
-    
+    "~value:" E         -> Value {cons("FromMetaExpr")}
+    "~register:" E      -> Register {cons("FromMetaExpr")}
+    "~operand:" E       -> Operand {cons("FromMetaExpr")}
+    "~id:" E            -> ID {cons("FromMetaExpr")}    
+    "~initializer:" E   -> DefineInitializer {cons("FromMetaExpr")}    
+    "~globals:" E       -> Globals {cons("FromMetaExpr")}    
+    "~externs:" E       -> Externals {cons("FromMetaExpr")}    
 
  
   

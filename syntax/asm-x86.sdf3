@@ -17,25 +17,28 @@ context-free syntax
   Start = File 
   
   File.File = [
+    [Externals]
     [Globals]
     [Sections]
   ]
   
-  
   File.Empty = []
   
-  Globals.NoGlobals = 
-  Globals = [global [{Global ","}+]]
-  Global.Global   = ID
+  Externals.Externals = [extern [{External ","}+]]
+  Externals.NoExtern  = []
+  External.External   = ID
+  Globals.Globals     = [global [{Global ","}+]]
+  Globals.NoGlobals   = []
+  Global.Global       = ID
   
-  Sections = {Section "\n"}*
+  Sections = [[{Section "\n"}*]]
   
   Section.DataSection = [
     SECTION .data
     [DataDeclaration]
   ]
   
-  DataDeclaration.DataDeclaration = [[ID]: [DefineMultiplier?] [DefineType] [DefineInitializer]]
+  DataDeclaration.DataDeclaration = [[ID]: [DefineMultiplier?] [DefineType] [{DefineInitializer ","}+]]
 
   DefineMultiplier.DefineMultiplier = [TIMES [INT]]
   
@@ -45,38 +48,61 @@ context-free syntax
   DefineType.Word       = [dw]
   DefineType.Byte       = [db]
   
-  DefineInitializer.Initializer = INT
+  DefineInitializer.Int = INT
+  DefineInitializer.String = STRING
     
-  Section.CodeSection = [
-    SECTION .code
+  Section.TextSection = [
+    SECTION .text
     [Instructions]
-  ]
+  ] 
   
   Instructions.NoInstructions = []
-  Instructions = {Instruction "\n"}+
+  Instructions = [[{Instruction "\n"}+]]
   
   Instruction.Label = [[ID]:]
   Instruction.Push  = [push [Operand]]
   Instruction.Pop   = [pop [Operand]]
   Instruction.Mov   = [mov [Operand], [Operand]]
   Instruction.Sub   = [sub [Operand], [Operand]]
+  Instruction.Add   = [add [Operand], [Operand]]
   Instruction.Test  = [test [Operand], [Operand]]
   Instruction.Cmp   = [cmp [Operand], [Operand]]
+  Instruction.Lea   = [lea [Operand], [Operand]]
   Instruction.Jle   = [jle [ID]]
+  Instruction.Jne   = [jne [ID]]
   Instruction.Jmp   = [jmp [ID]]
+  Instruction.Leave = [leave]
+  Instruction.Ret   = [ret]
+  Instruction.Call  = [call [ID]]
   
   Operand.DWPointer = <DWORD [<Expression>]>
+  Operand.QWPointer = <QWORD [<Expression>]>
+  Operand.Pointer = <[<Expression>]>
+  Operand.Offset = <OFFSET FLAT: <ID>>
   Operand.Expression = Expression
-  Operand.Register = Register
 
   Expression.Sub = [[Expression] - [Expression]]
   Expression = Register
   Expression = Value
+  Expression = ID {avoid}
 
   Value.Const = INT
   
   Register.RBP = [rbp]
   Register.RSP = [rsp]
+  
   Register.EAX = [eax]
+  Register.RAX = [rax]
+  
   Register.EBX = [ebx]
+  Register.RBX = [rbx]
+  
+  Register.ECX = [ecx]
+  Register.RCX = [rcx]
+  
+  Register.ESI = [esi]
+  Register.RSI = [rsi]
+  
+  Register.EDI = [edi]
+  Register.RDI = [rdi]
     
